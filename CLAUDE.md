@@ -42,7 +42,7 @@ support — those are explicitly Future Work only, not to be built).
 - `GEMMA_API_KEY` — already configured locally as an env var. **Never hardcode it
   into any file. Never commit it.** Check before every commit that no key leaked
   into a cell output, a script, or a config file.
-- `GEMMA_MODEL` — optional env var, defaults to `gemma-3-27b-it` in the code.
+- `GEMMA_MODEL` — optional env var, defaults to `gemma-4-31b-it` in the code.
 - Kaggle: already authenticated (Kaggle API/CLI configured locally).
 - GitHub: already authenticated via `gh`, and this repo is already cloned locally
   with a remote configured.

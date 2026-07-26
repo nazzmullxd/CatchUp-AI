@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MODEL = os.environ.get("GEMMA_MODEL", "gemma-3-27b-it")
+MODEL = os.environ.get("GEMMA_MODEL", "gemma-4-31b-it")
 API_KEY = os.environ.get("GEMMA_API_KEY", "")
 
 st.set_page_config(page_title="CatchUp AI", page_icon="📓", layout="wide")
@@ -44,6 +44,8 @@ Rate importance 1-5 using ONLY these criteria:
   1 = an aside, restatement, or decorative content
 
 Return ONLY valid JSON. No markdown fences, no commentary.
+Do not use LaTeX or backslash escapes (e.g. no \Delta, no $...$) — write chemistry/math
+notation in plain text (e.g. "LiAlH4", "delta", "O(log n)") so the JSON stays valid.
 
 {
   "coverage_percent": <int 0-100, share of board content meaningfully captured>,
@@ -111,7 +113,12 @@ def analyse(board, notes):
             ])],
         )
         raw = resp.text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-        return json.loads(raw), None
+        try:
+            return json.loads(raw), None
+        except json.JSONDecodeError:
+            import re
+            repaired = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', raw)
+            return json.loads(repaired), None
     except Exception as e:
         return FALLBACK, str(e)
 
@@ -148,6 +155,7 @@ if st.button("Generate Gap Report", type="primary", use_container_width=True):
             st.session_state.result, err = analyse(board, notes)
         if err:
             st.info("Showing cached sample output — live call unavailable.")
+            st.exception(err)
 
 r = st.session_state.get("result")
 if r:

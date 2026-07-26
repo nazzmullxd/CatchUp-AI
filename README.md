@@ -93,8 +93,8 @@ pip install streamlit google-genai pillow
 
 cp .env.example .env
 # Edit .env and set GEMMA_API_KEY
-# optional, defaults to gemma-3-27b-it
-# GEMMA_MODEL=gemma-3-27b-it
+# optional, defaults to gemma-4-31b-it
+# GEMMA_MODEL=gemma-4-31b-it
 
 streamlit run app.py
 ```
