@@ -3,3 +3,7 @@ __pycache__/
 *.py[cod]
 .streamlit/secrets.toml
 kaggle.json
+
+# local run artifacts
+*.log
+streamlit_log*.txt
